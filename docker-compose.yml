@@ -1,0 +1,55 @@
+version: "3.8"
+
+services:
+  api-01:
+    working_dir: /www
+    image: node:alpine
+    container_name: api-01
+    command: sh -c "npm install && node ./app.js"
+    volumes:
+      - ./app.js:/www/app.js
+      - ./package.json:/www/package.json
+    deploy:
+      resources:
+        limits:
+          cpus: "0.375"
+          memory: "137.5MB"
+
+  api-02:
+    working_dir: /www
+    image: node:alpine
+    container_name: api-02
+    command: sh -c "npm install && node ./app.js"
+    volumes:
+      - ./app.js:/www/app.js
+      - ./package.json:/www/package.json
+    deploy:
+      resources:
+        limits:
+          cpus: "0.375"
+          memory: "137.5MB"
+
+  nginx:
+    image: nginx:alpine
+    container_name: nginx
+    ports:
+      - 9999:9999
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    deploy:
+      resources:
+        limits:
+          cpus: "0.375"
+          memory: "137.5MB"
+
+  mongo:
+    image: mongo
+    container_name: mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
+    deploy:
+      resources:
+        limits:
+          cpus: "0.375"
+          memory: "137.5MB"
